@@ -2,13 +2,37 @@
 <html>
 
 <head>
-    <title></title>
+    <title>Above The Clouds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./style.css">
-</head>
+	<link rel="stylesheet" type="text/css" href="./bower_components/weather-icons/css/weather-icons.css">
+   <link href='https://fonts.googleapis.com/css?family=Ultra' rel='stylesheet' type='text/css'>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
 
-<body>
-    <div class="container"></div>
+
+</head>
+	
+<body>	<div id="title">
+			<h2>Above The Clouds</h2>
+			<h4>Your weather, any time, anywhere</h4>
+
+		</div>
+
+    	<div id="container">
+	    	<input type="text" placeholder="Enter Your Location">
+	    	<div id="weather-container"></div>
+	    	<button id="currently">
+	    	  <span class="cld">Today's Forecast</span>
+	    	</button>
+	    	<button id="hourly">
+	    	  <span class="cld">Hourly Forecast</span>
+	    	</button>
+	    	<button id="weekly">
+	    	  <span class="cld">Weekly Forecast</span>
+	    	</button>
+	    	
+    </div>
     <script type="text/javascript" src="./app-browserify.js"></script>
+
 </body>
 </html>
