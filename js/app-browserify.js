@@ -68,7 +68,7 @@ var CurrentView = Backbone.View.extend({ //constructor
     },
 
     getCurrentTemp: function() {
-        return this.model.attributes.currently.temperature
+        return this.model.attributes.currently.temperature+" F"
     },
 
 
@@ -86,11 +86,18 @@ var CurrentView = Backbone.View.extend({ //constructor
 
     render: function() {
     	console.log(this);
-        $('#weather-container').html(`<P>${this.getCurrentPlace()}</P>
-		<P>${this.getCurrentTemp()}</P>
+        $('#weather-container').html(`<h3>${this.getCurrentPlace()}</h3>
+		<h4>${this.getCurrentTemp()}</h4>
 		<i class="wi ${this.getCurrentIcon()}"></i>
-		<P>${this.getCurrentSummary()}</P>`);
-        $('.wi').css('fontSize', '70px')
+		<h4>${this.getCurrentSummary()}</h4>`);
+        $('.wi').css({
+            fontSize: '70px',
+            color: '#4679b2'
+        });
+
+       $('.wi').css('margin', '30px');
+       $('#weather-container h3').css('font', 'Ultra, serif');
+
     },
 
 
