@@ -58,7 +58,7 @@ var CurrentView = Backbone.View.extend({ //constructor
     getUserQuery: function(event) {
         if (event.keyCode === 13) {
             var query = event.target.value;
-            location.hash = `forecast/current/${query}`
+            location.hash = `forecast/Current/${query}`
         }
     },
 
@@ -248,6 +248,8 @@ var WeatherRouter = Backbone.Router.extend({
         var ajaxParams = {
             url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLon}&key=AIzaSyDvxp50Q2XT1q1dlDtSeoeyfegzwZvu9fw`,
             success: function(responseData) {
+                console.log(responseData,'XXXXXXXXXXXXX')
+
                 location.hash = `forecast/Current/${responseData.results[0].formatted_address}`
             }
         }
@@ -275,6 +277,7 @@ var WeatherRouter = Backbone.Router.extend({
     },
 
     showCurrentWeather: function(query) {
+        console.log("enter")
 
         this.doAjax(query, 'currentView')
     },
@@ -288,6 +291,8 @@ var WeatherRouter = Backbone.Router.extend({
     },
 
     getForcast: function(ViewName, responseData) {
+                console.log(responseData,'XXXXXXXXXXXXX')
+
         var location = responseData.results[0].geometry.location;
         var lat = location.lat,
             lng = location.lng;
