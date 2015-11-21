@@ -90,13 +90,10 @@ var CurrentView = Backbone.View.extend({ //constructor
         <h4>${this.getCurrentTemp()}</h4>
         <i class="wi ${this.getCurrentIcon()}"></i>
         <h4>${this.getCurrentSummary()}</h4>`);
-        $('.wi').css({
-            fontSize: '70px',
-            color: '#4679b2'
-        });
+       
 
         $('#weather-container').css('width', '350px');
-        
+        $('.wi').css('color', '#4679b2');
 
 
     },
@@ -113,31 +110,45 @@ var WeeklyView = Backbone.View.extend({
     },
 
     getWeeklyTemp: function(day) {
-        return "temperatures:" + day.temperatureMin + "-" + day.temperatureMax
+        return day.temperatureMin + "-" + day.temperatureMax
     },
 
 
-    getCurrentIcon: function() {
+    getWeeklytIcon: function(day) {
 
+        var iconsArr = this.model.attributes.icons
+        // console.log(iconsArr[day.icon])
+        return iconsArr[day.icon]
     },
 
     getWeeklySummary: function(day) {
         return day.summary;
     },
 
+    getD:function(day){
+        var daysArr=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+        var d=new Date(day.time*1000)
+        return daysArr[d.getUTCDay()]+" "+d.getUTCMonth()+"/"+d.getUTCDate();
+    },
+
 
     render: function() {
         var week = this.model.attributes.daily.data;
-
+        console.log(week)
         var self = this
-        var htmlString = `<P>${this.getWeeklyPlace()}</p>`;
+        var htmlString = `<h4 class="place">${this.getWeeklyPlace()}</h4>`;
         week.forEach(function(day) {
             htmlString += `<div id="day">
-            <P>${self.getWeeklyTemp(day)}</P>
-            <P>${self.getWeeklySummary(day)}</P></div>`
+            <p>${self.getD(day)}</p>
+            <i class="wi ${self.getWeeklytIcon(day)}"></i>
+            <P>${self.getWeeklyTemp(day)}</P></div>`
         })
+
         $('#weather-container').html(htmlString);
-       
+        $('#weather-container').css({
+            width: '1200px',
+            borderRadius:'1%'});
+
     }
 })
 
@@ -209,7 +220,7 @@ var HourlyView = Backbone.View.extend({
 var WeatherRouter = Backbone.Router.extend({
 
     routes: {
-        'forecast/current/:query': 'showCurrentWeather',
+        'forecast/Current/:query': 'showCurrentWeather',
         'forecast/Weekly/:query': 'showWeeklyWeather',
         'forecast/Hourly/:query': 'showHourlyWeather',
         '*anyroute': 'showDefault'
@@ -237,7 +248,7 @@ var WeatherRouter = Backbone.Router.extend({
         var ajaxParams = {
             url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLon}&key=AIzaSyDvxp50Q2XT1q1dlDtSeoeyfegzwZvu9fw`,
             success: function(responseData) {
-                location.hash = `forecast/current/${responseData.results[0].formatted_address}`
+                location.hash = `forecast/Current/${responseData.results[0].formatted_address}`
             }
         }
 
@@ -327,13 +338,14 @@ var WeatherRouter = Backbone.Router.extend({
 var router = new WeatherRouter()
 
 $('#currently').on('click', function() {
-    router.currentView.render()
+    location.hash=location.hash.replace(/forecast\/.*\//,'forecast/Current/')
 })
 $('#hourly').on('click', function() {
-    router.hourlyView.render()
+    location.hash=location.hash.replace(/forecast\/.*\//,'forecast/Hourly/')
+    // router.hourlyView.render()
 })
 $('#weekly').on('click', function() {
-    router.weeklyView.render()
+    location.hash=location.hash.replace(/forecast\/.*\//,'forecast/Weekly/')
 })
 
 //it then continues to to the initialization of the Router object (line 70)
